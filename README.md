@@ -1,30 +1,121 @@
 # abc-lily-composer
 
-为 Coding Agent 提供 ABC/LilyPond 创作、编辑、编译和分析。宿主提供模型、文件工具、终端与可用的独立审稿者。音乐知识通过 GitHub MCP 从独立的 music-knowledge-base 仓库按需读取。
+[中文说明](README.zh-CN.md) · [Install](#install) · [Contributing](CONTRIBUTING.md)
 
-## 安装与首次使用
+An Agent Skill for composing, editing, and analyzing **ABC and LilyPond scores**. Your coding agent writes the native notation, uses local tools for compilation and measurable facts, and revises the actual music using those results.
 
-独立公开仓库发布后运行（替换 `<owner>`）：
+Works with a host that supports Agent Skills, file editing, and shell commands. Independent review uses the host's subagents when available. No separate model API or custom agent runtime is required. The Skill instructions and detailed operational references are currently written in Chinese.
+
+## What it does
+
+- Compose and develop musical material, edit selected passages, or analyze an existing score without changing it.
+- Compile ABC with abcMIDI, or LilyPond with the LilyPond compiler; keep diagnostics and a report tied to the source and output hashes.
+- Use optional music21 analysis for notes, register, timing, harmony candidates, and voice-leading candidates.
+- Read relevant theory and examples from a separate GitHub knowledge repository through the host's GitHub MCP connection.
+- Review the actual notation and evidence, distinguish confirmed problems from uncertain musical judgments, and recompile after changes.
+
+| Format | Output from the included tools | Analysis |
+| --- | --- | --- |
+| ABC | MIDI, including multiple `X:` tunes | Native ABC facts where consistent with MIDI; otherwise disclosed MIDI fallback |
+| LilyPond | PDF and MIDI when requested and present in the score | MIDI-based facts; original enharmonic spelling is not recovered |
+
+Compilation does not establish musical correctness or artistic quality. MIDI is performance data; this Skill does not render audio. ABC PDF engraving, automatic accompaniment, and a hosted composition service are outside the included tools.
+
+## Install
+
+Use Node.js/npm to run the [Skills CLI](https://github.com/vercel-labs/skills):
 
 ```sh
-npx skills add <owner>/abc-lily-composer --skill abc-lily-composer
+npx skills add OpenCadenza/abc-lily-composer --skill abc-lily-composer
 ```
 
-也可将本目录交给宿主的 Skill 加载器。入口是 [SKILL.md](SKILL.md)。安装不会安装 Python、music21、编译器或 GitHub MCP。
-
-先读 [环境准备](references/setup.md) 与 [脚本用法](references/scripts.md)。设置 [知识来源配置](knowledge-source.json) 中的 owner；默认 repo 为 music-knowledge-base、branch 为 main。owner 初始为 null，表示尚未配置。宿主的 MCP 认证独立配置，凭据不写入此文件。
-
-按 [知识读取流程](references/github-knowledge.md) 接入远端。随附资料只包含操作说明；包内不附音乐知识快照。环境检测脚本不负责判断宿主 MCP 是否可用。
-
-示例：写八小节旋律，发展两小节动机，生成 MIDI，核查实际音符，再按 [审稿指引](references/review.md) 复核。
-
-## 开发与验证
+The installer lets you select a supported agent. For example, install for Codex in the current project:
 
 ```sh
-python -m unittest discover -s tests -v
-python scripts/package_skill.py --output dist/abc-lily-composer.zip
+npx skills add OpenCadenza/abc-lily-composer --skill abc-lily-composer --agent codex
 ```
 
-打包采用白名单，不需要知识库、数据库或相邻工作目录。GitHub 读取、鉴权和完整创作流程需在实际宿主中验证。编译成功和模型审稿不证明艺术质量。
+Add `--global` if you want a user-wide installation instead. To inspect available skills without installing:
 
-原创代码及新指令采用 [MIT](LICENSE)。既有操作资料保留原许可，详见 [NOTICE](NOTICE.md)。
+```sh
+npx skills add OpenCadenza/abc-lily-composer --list
+```
+
+For manual installation, clone or copy the repository to a location your host can load as a Skill. [SKILL.md](SKILL.md) is the entry point. This repository is installed directly from GitHub; there is no separate npm package to install.
+
+Installing the Skill does **not** install compilers, Python packages, or GitHub MCP. See the [Skills CLI command reference](https://github.com/vercel-labs/skills/blob/main/docs/commands.md) for agent selection and installation scope.
+
+## First use
+
+1. Install Python **3.11+** and the tools needed for your task: [LilyPond](https://lilypond.org/download.html) for `.ly`, or `abc2midi` and `abc2abc` from [abcMIDI](https://ifdo.ca/~seymour/runabc/top.html) for `.abc`.
+2. For musical analysis, install the pinned music21 dependency into a virtual environment in your **score workspace**, using the installed Skill's `scripts/requirements.txt`.
+3. Ask the host to use `abc-lily-composer`. It should resolve the installed Skill path, read the [setup guide](references/setup.md), and run the [appropriate scripts](references/scripts.md).
+4. For knowledge retrieval, connect a read-only GitHub MCP in your host and follow the [knowledge reading guide](references/github-knowledge.md).
+
+Example prompts:
+
+> Use abc-lily-composer to write an eight-bar piano piece in C major. Develop a two-bar motive, deliver a complete LilyPond file with PDF and MIDI, and explain any unresolved review findings.
+
+> Revise bars 9–16 of this ABC score while preserving the melody. Compile the result and check the transition into bar 17.
+
+> Analyze this score without editing it. Cite the actual notes and voices behind each claim, and separate measured facts from interpretation.
+
+### Optional analysis environment
+
+Create the virtual environment in your score workspace. Replace `<skill>` with the installed Skill path.
+
+Windows PowerShell:
+
+```powershell
+py -3 -m venv .venv
+.venv\Scripts\python.exe -m pip install -r "<skill>\scripts\requirements.txt"
+```
+
+macOS/Linux:
+
+```sh
+python3 -m venv .venv
+.venv/bin/python -m pip install -r "<skill>/scripts/requirements.txt"
+```
+
+Run analysis with that environment's Python interpreter. Compilation alone does not require music21.
+
+### Use the scripts directly
+
+Replace `<skill>` with the **absolute installation path**. Run these commands from your score workspace. On macOS/Linux, use `python3` or your virtual environment's interpreter.
+
+```sh
+python "<skill>/scripts/check_environment.py" --format lilypond
+python "<skill>/scripts/compile_score.py" --source piece.ly --output-dir build --require pdf --require midi
+python "<skill>/scripts/analyze_score.py" --source piece.ly --compile-report "<report-path-from-compilation>" --meter 4/4 --first 1 --last 8 --kind notes
+```
+
+The LilyPond score must include the layout/MIDI declarations needed for the requested outputs. For ABC, use `--source melody.abc --require midi`. Analysis requires music21 and the successful report for the **current** source. Keep the report and its artifacts together; changed or missing artifacts invalidate it.
+
+Compiler discovery supports explicit command options, `LILYPOND_PATH`, `ABC2MIDI_PATH`, and `ABC2ABC_PATH`, then `PATH`. Commands emit JSON; inspect their exit status and diagnostics. See [script usage](references/scripts.md) for selection, paging, pickups, and analysis limitations.
+
+## Knowledge repository
+
+[knowledge-source.json](knowledge-source.json) defaults to `OpenCadenza/music-knowledge-base`, branch `main`. Knowledge publishing is a separate integration: this Skill does not include the corpus, Wiki.js, a database importer, or a GitHub publisher. **The knowledge endpoint has not yet been verified as available.** Installing this Skill does not make it available.
+
+The host reads the repository using its own GitHub MCP credentials. No token belongs in the configuration file. To use another compatible knowledge source, change the owner/repository in your installation or tell the host which source to use; preserve custom settings when updating the Skill.
+
+The reading workflow fixes a commit when possible, selects articles through the catalog, and records article IDs, revisions, and sources. Search snippets locate candidates; they do not replace the full article. If the knowledge source is unavailable, the host reports that limitation; local score compilation and analysis remain usable with their dependencies installed.
+
+## Project layout and contribution
+
+```text
+SKILL.md                 Agent entry point
+knowledge-source.json    Remote knowledge location; no credentials
+references/              Setup, script, review, and retrieval guidance
+scripts/                 Local compilation and analysis tools
+tests/                  Runtime and distribution regression tests
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for changes and packaging, and [SECURITY.md](SECURITY.md) for local execution boundaries and vulnerability reports. Report reproducible problems through [GitHub Issues](https://github.com/OpenCadenza/abc-lily-composer/issues).
+
+The packaging workflow checks Python syntax and builds the runtime archive on Linux and Windows. It does not install music toolchains, compile a knowledge corpus, invoke a model, or certify musical quality.
+
+## License
+
+Original code and new Skill instructions are [MIT licensed](LICENSE). The inherited `references/setup.md`, `references/scripts.md`, and `references/review.md` remain **CC BY-SA 4.0**, with attribution to OpusLoom contributors. See [NOTICE.md](NOTICE.md) for the file-level distinction. Remote theory text, scores, and examples retain their own licenses and attribution requirements.

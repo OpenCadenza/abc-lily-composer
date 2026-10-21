@@ -1,6 +1,6 @@
 # 从 GitHub 读取音乐知识
 
-读取安装目录下的 [knowledge-source.json](../knowledge-source.json)。provider 为 github_mcp；owner 必须由维护者或用户设置，repo 默认为 music-knowledge-base。只使用宿主提供的只读仓库访问能力，按已注册工具的实际参数调用，不预设工具名称。
+读取安装目录下的 [knowledge-source.json](../knowledge-source.json)。provider 为 github_mcp；默认 owner 为 OpenCadenza，repo 为 music-knowledge-base。这是预期的知识来源配置，不表示远端发布端已部署；改用其他兼容来源时设置对应 owner/repo。只使用宿主提供的只读仓库访问能力，按已注册工具的实际参数调用，不预设工具名称。
 
 ## 按任务读取
 

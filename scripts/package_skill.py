@@ -13,7 +13,8 @@ RUNTIME = ('_common.py', 'check_environment.py', 'compile_score.py', 'analyze_sc
 
 def package(root, output):
     root, output = Path(root).resolve(), Path(output).resolve()
-    names = ['SKILL.md', 'README.md', 'LICENSE', 'NOTICE.md', 'knowledge-source.json']
+    names = ['SKILL.md', 'README.md', 'README.zh-CN.md', 'CONTRIBUTING.md',
+             'SECURITY.md', 'LICENSE', 'NOTICE.md', 'knowledge-source.json']
     names += ['scripts/' + name for name in RUNTIME]
     names += [p.relative_to(root).as_posix() for p in sorted((root / 'references').rglob('*.md'))]
     if not (root / 'references/github-knowledge.md').is_file():
