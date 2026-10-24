@@ -1,6 +1,6 @@
 # abc-lily-composer
 
-[中文说明](README.zh-CN.md) · [Install](#install) · [Contributing](CONTRIBUTING.md)
+[中文说明](README.zh-CN.md) · [Install](#install) · [Issues](https://github.com/OpenCadenza/abc-lily-composer/issues)
 
 An Agent Skill for composing, editing, and analyzing **ABC and LilyPond scores**. Your coding agent writes the native notation, uses local tools for compilation and measurable facts, and revises the actual music using those results.
 
@@ -96,25 +96,24 @@ Compiler discovery supports explicit command options, `LILYPOND_PATH`, `ABC2MIDI
 
 ## Knowledge repository
 
-[knowledge-source.json](knowledge-source.json) defaults to `OpenCadenza/music-knowledge-base`, branch `main`. Knowledge publishing is a separate integration: this Skill does not include the corpus, Wiki.js, a database importer, or a GitHub publisher. **The knowledge endpoint has not yet been verified as available.** Installing this Skill does not make it available.
+[knowledge-source.json](knowledge-source.json) points to the public [OpenCadenza/music-knowledge-base](https://github.com/OpenCadenza/music-knowledge-base), branch `main`. It publishes administrator-approved Wiki revisions. This Skill includes retrieval instructions, not the corpus, Wiki.js, an importer, or a publisher. Installing it does not install GitHub MCP.
 
 The host reads the repository using its own GitHub MCP credentials. No token belongs in the configuration file. To use another compatible knowledge source, change the owner/repository in your installation or tell the host which source to use; preserve custom settings when updating the Skill.
 
-The reading workflow fixes a commit when possible, selects articles through the catalog, and records article IDs, revisions, and sources. Search snippets locate candidates; they do not replace the full article. If the knowledge source is unavailable, the host reports that limitation; local score compilation and analysis remain usable with their dependencies installed.
+Follow the [knowledge reading guide](references/github-knowledge.md): resolve the branch to a commit, read its manifest and TSV catalog, then fetch selected articles and source records at that same commit. The catalog is the primary entry point; an empty code-search result does not mean the repository has no articles. Use only manifest-listed articles and verify their actual UTF-8 SHA-256 and revision metadata. Git Blob SHAs are not article SHA-256 values.
 
-## Project layout and contribution
+The manifest defines the current LilyPond target; ABC is preserved. `compilation_validation=not_performed` means conversion has not established compilation, rendering, or musical correctness, even if an example is labelled published. Compile and review any reused material in the actual work. Record the commit, article revision, example IDs, and sources used. If retrieval or verification is incomplete, disclose it; local composition, compilation and analysis remain available.
+
+## Runtime layout
 
 ```text
 SKILL.md                 Agent entry point
 knowledge-source.json    Remote knowledge location; no credentials
 references/              Setup, script, review, and retrieval guidance
 scripts/                 Local compilation and analysis tools
-tests/                  Runtime and distribution regression tests
 ```
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for changes and packaging, and [SECURITY.md](SECURITY.md) for local execution boundaries and vulnerability reports. Report reproducible problems through [GitHub Issues](https://github.com/OpenCadenza/abc-lily-composer/issues).
-
-The packaging workflow checks Python syntax and builds the runtime archive on Linux and Windows. It does not install music toolchains, compile a knowledge corpus, invoke a model, or certify musical quality.
+The online branch contains the installable runtime and its documentation. Development instructions, tests, CI definitions and packaging tools are maintained on a local development branch and are not included in this distribution. Report reproducible problems through [GitHub Issues](https://github.com/OpenCadenza/abc-lily-composer/issues). Read [SECURITY.md](SECURITY.md) for execution boundaries and vulnerability reports.
 
 ## License
 

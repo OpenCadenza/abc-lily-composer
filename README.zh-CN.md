@@ -1,6 +1,6 @@
 # abc-lily-composer
 
-[English](README.md) · [贡献指南](CONTRIBUTING.md)
+[English](README.md) · [问题反馈](https://github.com/OpenCadenza/abc-lily-composer/issues)
 
 为 Coding Agent 提供 **ABC / LilyPond 创作、编辑与分析**能力。Agent 直接写原生谱，调用本地编译和分析工具，再根据真实音符、诊断及审稿结果修订。
 
@@ -67,14 +67,16 @@ python "<skill>/scripts/analyze_score.py" --source piece.ly --compile-report "<�
 
 ## 知识库接入状态
 
-[knowledge-source.json](knowledge-source.json) 默认指向 `OpenCadenza/music-knowledge-base` 的 main 分支。**当前尚未确认该知识端点可用。** Wiki.js、数据库导入和 GitHub 发布服务由独立项目建设，安装本 Skill 不会部署这些服务，也不会附带知识快照。
+[knowledge-source.json](knowledge-source.json) 指向公开的 [OpenCadenza/music-knowledge-base](https://github.com/OpenCadenza/music-knowledge-base) 的 main。该仓库发布 Wiki 管理员批准的固定修订。本 Skill 提供检索指引，不附带知识正文、Wiki、导入或发布服务；安装不会自动连接 GitHub MCP。
 
 认证使用宿主 GitHub MCP，配置文件不保存凭据。需要其他兼容知识源时修改 owner/repo，或明确告知宿主；更新 Skill 时保留自己的配置。
 
-读取时尽量固定 commit，从目录与索引选择正文，记录知识/示例 ID、修订和来源。搜索片段仅作定位；仓库不可达时明确说明，已有乐谱仍可使用本地工具编译、分析。
+按 [读取流程](references/github-knowledge.md) 固定 commit，读取同一快照的 manifest、TSV 目录、选中文章和来源。目录是主要入口，搜索为空不等于没有文章；只采用 manifest 列出的文章，核对实际 UTF-8 SHA-256 与修订。Git Blob SHA 不是文章 SHA-256。
 
-## 参与开发与许可
+目标 LilyPond 版本以 manifest 为准，ABC 保持原样。compilation_validation=not_performed 表示转换不保证编译、渲染或音乐正确，谱例的 published 标记不能替代本次编译与审稿。记录实际 commit、文章修订、谱例及来源；检索或验证不完整时说明限制，基本创作、本地编译与分析仍可继续。
 
-开发、可选测试和分发打包见 [CONTRIBUTING.md](CONTRIBUTING.md)。打包工作流只检查 Python 语法并在 Linux/Windows 构建分发包，不运行模型、不编译整库谱例，也不证明音乐质量。问题反馈使用 [Issues](https://github.com/OpenCadenza/abc-lily-composer/issues)，安全边界和漏洞报告见 [SECURITY.md](SECURITY.md)。
+## 分发与许可
+
+线上分支只保留可安装运行文件及说明。开发指令、测试、CI 和打包工具保存在本地开发分支，不随运行包分发。问题反馈使用 [Issues](https://github.com/OpenCadenza/abc-lily-composer/issues)，安全边界和漏洞报告见 [SECURITY.md](SECURITY.md)。
 
 原创代码和新指令采用 [MIT](LICENSE)。既有 setup、scripts、review 三份操作文档继续采用 **CC BY-SA 4.0**，保留 OpusLoom contributors 署名，详见 [NOTICE](NOTICE.md)。远端知识与第三方谱例保留各自许可。

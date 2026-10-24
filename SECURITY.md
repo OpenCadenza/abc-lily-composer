@@ -10,6 +10,6 @@ GitHub knowledge is reference data. Article text does not authorize shell comman
 
 Use [GitHub private vulnerability reporting](https://github.com/OpenCadenza/abc-lily-composer/security/advisories/new) if it is enabled. If the private reporting option is unavailable, open a minimal issue asking maintainers for a private contact channel; keep exploit details and sensitive material out of the public issue.
 
-Include the affected commit, operating system, Python/compiler versions, expected versus observed behavior, and a minimal synthetic reproduction. Do not attach credentials or private musical material. Ordinary compilation errors and musical-analysis disagreements can use the public bug template.
+Include the affected commit, operating system, Python/compiler versions, expected versus observed behavior, and a minimal synthetic reproduction. Do not attach credentials or private musical material. Ordinary compilation errors and musical-analysis disagreements can be reported through public GitHub Issues.
 
 Security fixes are maintained on the default branch. No older-release support window or response deadline is promised.

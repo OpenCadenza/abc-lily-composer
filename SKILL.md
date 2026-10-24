@@ -10,7 +10,7 @@ description: 创作、编辑和分析 ABC 或 LilyPond 乐谱，处理主题发�
 ## 准备与参考
 
 1. 明确创作、编辑或只读分析任务，读取编制、规模、风格、产物和保留要求。已有作品先读实际文件及必要定义；分析任务不改原谱。
-2. 按 [GitHub 知识读取](references/github-knowledge.md) 读取 `knowledge-source.json`，通过宿主 GitHub MCP 从 music-knowledge-base 获取知识。先固定 commit，读 manifest 与 catalog，按任务读取 ABC/LilyPond、曲式、发展、复调、风格和编制专题。记录实际使用的文章、知识与示例 ID、修订和 commit；搜索摘要只用于定位。原版历史代码留在 Wiki，使用远端标注的目标版本写新谱。仓库未配置或不可达时明确记录检索未完成；现有源码仍可用本地脚本编译和分析。
+2. 需要写谱规则、理论或作品案例时，按 [GitHub 知识读取](references/github-knowledge.md) 使用 `knowledge-source.json` 指定的宿主 GitHub MCP。固定 commit，在同一快照读 manifest、catalog、选中文章和来源；以目录为入口，搜索为空不表示无文章。只采用 manifest 中的文章，核对正文哈希、页面 ID、修订与目标版本，记录实际知识/谱例和来源。知识库是批准后的转换视图，published 标记不证明编译、渲染或音乐正确；借用谱例仍需本次编译和审稿。检索失败或快照未验证时说明限制，现有源码仍可创作、编译和分析。
 3. 首次运行或工具缺失时读 [环境准备](references/setup.md)，只补齐任务所需依赖。读 [脚本用法](references/scripts.md) 后执行；按安装位置解析脚本绝对路径，不假设 Skill 位于工作目录。谱、输出和依赖环境放在用户工作区，不写入安装的 Skill。
 
 ## 创作与编辑
