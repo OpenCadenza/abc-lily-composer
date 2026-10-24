@@ -43,7 +43,7 @@ npx skills add OpenCadenza/abc-lily-composer --list
 1. 准备 Python **3.11+**。LilyPond 任务需要 LilyPond；ABC 任务需要同一 abcMIDI 发行包中的 abc2midi 和 abc2abc。
 2. 需要分析时，在用户作品目录创建虚拟环境，使用 Skill 内的 scripts/requirements.txt 安装固定版本 music21。依赖和产物放在作品目录。
 3. 让宿主使用 abc-lily-composer，按安装位置解析脚本的绝对路径，读取 [环境准备](references/setup.md) 和 [脚本说明](references/scripts.md)。
-4. 需要知识检索时，在宿主中连接只读 GitHub MCP，并按 [读取流程](references/github-knowledge.md) 接入。
+4. 创作、改谱和音乐分析前必须通过 GitHub MCP 实际读取相关作曲参考，不能只看目录/摘要。缺少 MCP 时先主动安装、注册官方 GitHub MCP 并验证真实读取；按 [安装与读取流程](references/github-knowledge.md) 执行，需要用户完成的登录/重载步骤完成后才继续。
 
 可直接提出这样的任务：
 
@@ -73,7 +73,7 @@ python "<skill>/scripts/analyze_score.py" --source piece.ly --compile-report "<�
 
 按 [读取流程](references/github-knowledge.md) 固定 commit，读取同一快照的 manifest、TSV 目录、选中文章和来源。目录是主要入口，搜索为空不等于没有文章；只采用 manifest 列出的文章，核对实际 UTF-8 SHA-256 与修订。Git Blob SHA 不是文章 SHA-256。
 
-目标 LilyPond 版本以 manifest 为准，ABC 保持原样。compilation_validation=not_performed 表示转换不保证编译、渲染或音乐正确，谱例的 published 标记不能替代本次编译与审稿。记录实际 commit、文章修订、谱例及来源；检索或验证不完整时说明限制，基本创作、本地编译与分析仍可继续。
+目标 LilyPond 版本以 manifest 为准，ABC 保持原样。compilation_validation=not_performed 表示转换不保证编译、渲染或音乐正确，published 不能替代本次编译与审稿。交付列出实际读取的文章固定 commit 链接、谱例和来源，并说明如何用于本次写作。没有精确专题时读取适用基础参考并说明不足；任何正文都无法读取时先解决安装、授权或网络阻塞，不能静默跳过检索直接写谱。
 
 ## 分发与许可
 

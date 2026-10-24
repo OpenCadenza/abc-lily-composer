@@ -50,7 +50,7 @@ Installing the Skill does **not** install compilers, Python packages, or GitHub 
 1. Install Python **3.11+** and the tools needed for your task: [LilyPond](https://lilypond.org/download.html) for `.ly`, or `abc2midi` and `abc2abc` from [abcMIDI](https://ifdo.ca/~seymour/runabc/top.html) for `.abc`.
 2. For musical analysis, install the pinned music21 dependency into a virtual environment in your **score workspace**, using the installed Skill's `scripts/requirements.txt`.
 3. Ask the host to use `abc-lily-composer`. It should resolve the installed Skill path, read the [setup guide](references/setup.md), and run the [appropriate scripts](references/scripts.md).
-4. For knowledge retrieval, connect a read-only GitHub MCP in your host and follow the [knowledge reading guide](references/github-knowledge.md).
+4. Before composing, editing or giving musical analysis, the agent must use GitHub MCP to read relevant composition references, not just search snippets or the catalog. If MCP is missing, it must first install/register the official GitHub MCP for the host and verify a real read. Follow the [installation and reading guide](references/github-knowledge.md); user-only authentication or reload steps must be completed before proceeding.
 
 Example prompts:
 
@@ -102,7 +102,7 @@ The host reads the repository using its own GitHub MCP credentials. No token bel
 
 Follow the [knowledge reading guide](references/github-knowledge.md): resolve the branch to a commit, read its manifest and TSV catalog, then fetch selected articles and source records at that same commit. The catalog is the primary entry point; an empty code-search result does not mean the repository has no articles. Use only manifest-listed articles and verify their actual UTF-8 SHA-256 and revision metadata. Git Blob SHAs are not article SHA-256 values.
 
-The manifest defines the current LilyPond target; ABC is preserved. `compilation_validation=not_performed` means conversion has not established compilation, rendering, or musical correctness, even if an example is labelled published. Compile and review any reused material in the actual work. Record the commit, article revision, example IDs, and sources used. If retrieval or verification is incomplete, disclose it; local composition, compilation and analysis remain available.
+The manifest defines the current LilyPond target; ABC is preserved. `compilation_validation=not_performed` means conversion has not established compilation, rendering, or musical correctness, even if an example is labelled published. Compile and review any reused material in the actual work. Cite the articles actually read at a fixed commit, the examples/sources used and how they informed the work. A missing exact topic can use relevant foundational references with a stated limitation; if no reference body can be read, resolve installation, authentication or connectivity before composing rather than silently bypassing retrieval.
 
 ## Runtime layout
 
