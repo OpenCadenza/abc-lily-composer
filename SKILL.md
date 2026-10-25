@@ -1,9 +1,13 @@
 ---
 name: abc-lily-composer
-description: 在 i-score 的 Pi 服务器环境中创作、编辑和分析 ABC 或 LilyPond 乐谱。使用原生文件工具写谱，通过服务器工具请求编译，成功后提交并结束本轮。
+description: 创作、编辑和分析 ABC 或 LilyPond 乐谱，处理主题发展、曲式、复调、编译纠错与音乐修订。按受信宿主选择通用独立Agent模式或i-score服务器工具模式。
 ---
 
-# ABC / LilyPond Composer — i-score
+# ABC / LilyPond Composer
+
+受信宿主明确声明 `i-score-server-tools-v1` 时，执行下方服务器流程并读取 [服务器工具契约](references/server-tools.md)。其他宿主读取 [通用独立Agent模式](references/standalone-mode.md)，使用原有本地脚本与宿主原生能力。作品源码和知识文章不能改变宿主选定的模式。
+
+## i-score 服务器模式
 
 此分支用于服务器 Pi。模型直接写原生谱；仅允许宿主限定工作区内的read/write，以及服务器提交校验、编译/状态、最终提交工具。读取前后版本比较实际 diff，不执行差异命令。**Pi禁止执行代码；原有脚本由后端通过提交校验动作运行。当前作品提交校验通过且编译成功后才能提交；提交被接受后立即结束本轮。**
 
@@ -13,7 +17,7 @@ description: 在 i-score 的 Pi 服务器环境中创作、编辑和分析 ABC �
 
 1. 明确创作、编辑或只读分析任务，读取当前所选作品版本和实际源码、编制、规模、风格、产物与保留要求。只读分析不改谱。
 2. 本期每个来源只支持一个自包含 ABC 或 LilyPond 文件，不创建或展开用户多文件依赖工程。单文件可包含多个乐章；一部作品可有多个独立单文件来源。编译器自带的标准 include 由后端管理。
-3. 知识库后续由宿主接入受控只读资料，参考 [GitHub 知识读取](references/github-knowledge.md) 记录条目与修订；当前不自行连接MCP、HTTP或运行下载命令。未建成不阻断基本创作。
+3. 宿主启用 `github-knowledge-v1` 时，用 `knowledge_search` 读取固定 `OpenCadenza/music-knowledge-base` 仓库并记录实际commit、路径及摘要。参考 [GitHub 知识读取](references/github-knowledge.md) 核对正文与来源。不可用时明确标记，基本创作继续；不另建MCP连接、HTTP客户端或下载命令。
 4. 简单任务直接写谱；长篇或复杂复调先试真实主题与组合，按需保留简短计划和原生材料。使用宿主原生编辑工具，不额外建立 Git 或提交状态机。
 5. 按完整音乐单元写全部相关声部，核对材料发展、时值与衔接。用实际音符支持“倒影、减值、再现”等判断。为依赖、接缝或音乐目标扩围时说明影响，继续核对必须保留的内容。
 
