@@ -1,3 +1,7 @@
+# i-score server branch boundary
+
+Pi must use the host compilation and terminal submission tools. The backend must validate the current full-work snapshot and its server-owned build receipt, isolate the compiler, and enforce termination after accepted submission. Skill text is not an authorization boundary. Retained local helpers are upstream utilities, not the server workflow. See [server tool contract](references/server-tools.md).
+
 # Security and local execution
 
 This Skill runs local Python helpers and external music compilers with the host user's permissions. It is not a sandbox or a hosted compilation service. LilyPond supports Scheme execution; compile untrusted input only in an environment with isolation appropriate to your host and task.

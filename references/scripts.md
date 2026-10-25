@@ -1,3 +1,5 @@
+> i-score 服务器分支不使用本页的本地编译/安装流程。服务器 Pi 的执行规范见 [服务器工具契约](server-tools.md)；本页保留通用上游工具参考和原有署名许可。
+
 <!-- knowledge: operation.scripts -->
 # 脚本用法与证据
 

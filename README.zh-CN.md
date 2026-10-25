@@ -1,3 +1,5 @@
+> 本分支为 i-score 服务器适配：Pi 通过 score_compile 请求编译，成功后用 score_submit 提交并立即结束本轮；暂不支持用户多文件依赖工程。执行以 [服务器工具契约](references/server-tools.md) 为准。下方本地脚本说明属于通用上游工具，不是服务器执行流程。
+
 # abc-lily-composer
 
 [English](README.md) · [贡献指南](CONTRIBUTING.md)

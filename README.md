@@ -1,3 +1,5 @@
+> This is the i-score server-tools branch. Pi requests compilation with score_compile and ends the round with score_submit after success. No user multi-file dependency projects are supported in this branch. See [server tool contract](references/server-tools.md). The local compiler instructions below describe the generic upstream utilities and are not the server execution workflow.
+
 # abc-lily-composer
 
 [中文说明](README.zh-CN.md) · [Install](#install) · [Contributing](CONTRIBUTING.md)
